@@ -2,7 +2,7 @@
 /*
 /**
  * Plugin Name: Custom Content Posts
- * Plugin URI: http://danielpataki.com
+ * Plugin URI: https://github.com/kamela-peppylish/WP-Custom-Posts-Plugin
  * Description: This plugin creates dedicated custom posts to publish site content and services. This plugin create two types of custom post: Content Post and Service Page post. Install this plugin and enjoy creating site seperated form your main content and pages! 
  * Version: 1.0.0
  * Author: Kamela Chowdhury
