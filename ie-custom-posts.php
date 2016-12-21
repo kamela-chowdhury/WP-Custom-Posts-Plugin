@@ -6,7 +6,7 @@
  * Description: This plugin creates dedicated custom posts to publish site content and services. This plugin create two types of custom post: Content Post and Service Page post. Install this plugin and enjoy creating site seperated form your main content and pages! 
  * Version: 1.0.0
  * Author: Kamela Chowdhury
- * Author URI: peppylish.com
+ * Author URI: https://github.com/kamela-peppylish/
  * License: GPL2
  */
 
@@ -116,14 +116,14 @@ function register_content_taxonomy(){
 }
 add_action('init','register_content_taxonomy');
 // Insert image URL metabox 
-function img_url($post){
+function meta_keyword($post){
   $custom = get_post_custom($post->ID);
-  $img_url = $custom["img_url"][0];
+  $meta_keyword = $custom["meta_keyword"][0];
 
-  wp_nonce_field(plugin_basename(__FILE__), 'img_url_nonce', true);
+  wp_nonce_field(plugin_basename(__FILE__), 'meta_keyword_nonce', true);
 
-  echo '<label for="img_url"></label>';
-  echo '<input type="text" id="img_url" name="img_url" value="'.$img_url.'" placeholder="Enter image URL">';
+  echo '<label for="meta_keyword"></label>';
+  echo '<input type="text" id="meta_keyword" name="meta_keyword" value="'.$meta_keyword.' "style="width:100%; height:50px;" placeholder="Meta Keywords">';
 }
 // Service Banner content meta box
 function banner_content($post){
@@ -133,19 +133,19 @@ function banner_content($post){
   echo '<textarea name="banner_content" id="banner_content" style="width:100%; height:350px;" placeholder="Here you can enter content for Banner Section">'.$banner_content.'</textarea>';
 }
 // Service Banner subsidiary content meta box
-function subsidiary_content($post){
+function meta_description($post){
   $custom = get_post_custom($post->ID);
-  $subsidiary_content = $custom["subsidiary_content"][0];
-  echo '<label for="subsidiary_content"></label>';
-  echo '<textarea name="subsidiary_content" id="subsidiary_content" style="width:100%; height:350px;" placeholder="Here you can enter content for subsidiary Section">'.$subsidiary_content.'</textarea>';
+  $meta_description = $custom["meta_description"][0];
+  echo '<label for="meta_description"></label>';
+  echo '<textarea name="meta_description" id="meta_description" style="width:100%; height:100px;" placeholder="Enter your meta description here">'.$meta_description.'</textarea>';
 }
 function custom_meta_box() {
-$postypes = array('services', 'content');
+$postypes = array('services', 'content','post','page');
 foreach ( $postypes as $postype) {
     add_meta_box(
-        'img_url_box',
-        __('Insert Image URL', 'myplugin_textdomain'),
-        'img_url',
+        'meta_keyword_box',
+        __('Meta Keywords', 'myplugin_textdomain'),
+        'meta_keyword',
         $postype,
         'side',
         'low'
@@ -159,9 +159,9 @@ foreach ( $postypes as $postype) {
         'high'
             );
     add_meta_box(
-        'subsidiary_content_box',
-        __('Subsidiary Content', 'myplugin_textdomain'),
-        'subsidiary_content',
+        'meta_description_box',
+        __('Meta Description', 'myplugin_textdomain'),
+        'meta_description',
         $postype,
         'normal',
         'low'
@@ -171,7 +171,7 @@ foreach ( $postypes as $postype) {
 add_action( 'add_meta_boxes', 'custom_meta_box' );
 // save meta fields value
 function save_details($post_id){
-if (( 'content' == $_POST['post_type'] ) || ( 'services' == $_POST['post_type'] ))
+if (( 'content' == $_POST['post_type'] ) || ( 'services' == $_POST['post_type'] ) || ( 'post' == $_POST['post_type'] ) || ('page' == $_POST['post_type'] ))
   {
     if ( !current_user_can( 'edit_post', $post_id ) )
         return $post_id;
@@ -181,9 +181,9 @@ if (( 'content' == $_POST['post_type'] ) || ( 'services' == $_POST['post_type'] 
     if ( !current_user_can( 'edit_post', $post_id ) )
         return $post_id;
   }
-update_post_meta($post_id, "img_url", $_POST["img_url"]);
+update_post_meta($post_id, "meta_keyword", $_POST["meta_keyword"]);
 update_post_meta($post_id, "banner_content", $_POST["banner_content"]);
-update_post_meta($post_id, "subsidiary_content", $_POST["subsidiary_content"]);
+update_post_meta($post_id, "meta_description", $_POST["meta_description"]);
 
 }
 
